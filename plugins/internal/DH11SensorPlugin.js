@@ -1,58 +1,69 @@
-var CorePlugin = require('./../corePlugin').CorePlugin,
-    util = require('util'),
+var resources = require('./../../resources/model'),
     utils = require('./../../utils/utils.js');
 
-var modelTemperature, modelHumidity, sensor, interval;
+var interval, sensor;
+var model = resources.pi.sensors;
+var pluginName = 'Temperature & Humidity';
+var localParams = {'simulate': false, 'frequency': 5000};
 
-var Dht11Plugin = exports.Dht11Plugin = function (params) {
-    CorePlugin.call(this, params, 'temperature', stop, simulate, null, null);
-    modelTemperature = this.model;
-    modelHumidity = utils.findProperty('humidity');
-
-    // init
-    this.addValue([0, 0]);
-};
-util.inherits(Dht11Plugin, CorePlugin);
-
-function stop() {
-    clearInterval(interval);
-}
-
-function simulate() {
-    this.addValue([utils.randomInt(0, 40), utils.randomInt(20, 100)]);
-}
-
-Dht11Plugin.prototype.addValue = function(values) {
-    utils.cappedPush(modelTemperature.data, {"t": values[0], "timestamp": utils.isoTimestamp()});
-    utils.cappedPush(modelHumidity.data, {"h": values[1], "timestamp": utils.isoTimestamp()});
+exports.start = function (params) {
+    localParams = params;
+    if (params.simulate) {
+        simulate();
+    } else {
+        connectHardware();
+    }
 };
 
-Dht11Plugin.prototype.showValues = function () {
-    console.info('Temperature: %s C, Humidity: %s \%', modelTemperature.data[modelTemperature.data.length-1].t, modelHumidity.data[modelHumidity.data.length-1].h);
+exports.stop = function () {
+    if (params.simulate) {
+        clearInterval(interval);
+    } else {
+        sensor.unexport();
+    }
+    console.info('%s plugin stopped!', pluginName);
 };
 
-Dht11Plugin.prototype.connectHardware = function () {
+function connectHardware() {
     var sensorDriver = require('node-dht-sensor');
-    var self = this;
-    sensor = {
+    var sensor = {
         initialize: function () {
-            console.log('Starting DHT Sensor on GPIO, %s', self.model.values.t.customFields.gpio);
-            return sensorDriver.initialize(11, self.model.values.t.customFields.gpio);
+            return sensorDriver.initialize(22, model.temperature.gpio); //#A
         },
         read: function () {
-            var readout = sensorDriver.read();
-            self.addValue([parseFloat(readout.temperature.toFixed(2)), parseFloat(readout.humidity.toFixed(2))]);
-            self.showValues();
+            var readout = sensorDriver.read(); //#B
+            model.temperature.value = parseFloat(readout.temperature.toFixed(2));
+            model.humidity.value = parseFloat(readout.humidity.toFixed(2)); //#C
+            showValue();
+
+            setTimeout(function () {
+                sensor.read(); //#D
+            }, localParams.frequency);
         }
     };
     if (sensor.initialize()) {
-        console.info('Hardware %s sensor started!', self.model.name);
-        interval = setInterval(function () {
-            sensor.read();
-        }, 2000);
+        console.info('Hardware %s sensor started!', pluginName);
+        sensor.read();
     } else {
         console.warn('Failed to initialize sensor!');
     }
 };
 
+function simulate() {
+    interval = setInterval(function () {
+        model.temperature.value = utils.randomInt(0, 40);
+        model.humidity.value = utils.randomInt(0, 100);
+        showValue();
+    }, localParams.frequency);
+    console.info('Simulated %s sensor started!', pluginName);
+};
 
+function showValue() {
+    console.info('Temperature: %s C, humidity %s \%',
+        model.temperature.value, model.humidity.value);
+};
+
+//#A Initialize the driver for DHT22 on GPIO 12 (as specified in the model)
+//#B Fetch the values from the sensors
+//#C Update the model with the new temperature and humidity values; note that all observers will be notified
+//#D Because the driver doesn’t provide interrupts, you poll the sensors for new values on a regular basis with a regular timeout function and set sensor.read() as a callback
