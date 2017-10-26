@@ -1,7 +1,12 @@
 {
   "name": "wot-pi",
   "version": "0.0.1",
+  "description": "a web of things project",
+  "repository": "https://github.com/kotrotskon/wot-pi.git",
+  "license": "Apache-2.0",
   "dependencies": {
-    "express": "^4.16.2"
+    "async": "^2.5.0",
+    "express": "^4.16.2",
+    "request": "^2.83.0"
   }
 }
