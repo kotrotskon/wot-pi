@@ -8,5 +8,9 @@
     "async": "^2.5.0",
     "express": "^4.16.2",
     "request": "^2.83.0"
+  },
+  "optionalDependencies": {
+    "onoff": "^1.0.4",
+    "node-dht-sensor": "^0.0.8"
   }
 }
