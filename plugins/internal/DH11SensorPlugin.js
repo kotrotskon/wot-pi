@@ -15,6 +15,7 @@ exports.start = function (params) {
     }
 };
 
+
 exports.stop = function () {
     if (params.simulate) {
         clearInterval(interval);
