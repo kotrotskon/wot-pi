@@ -4,7 +4,7 @@ var resources = require('./../../resources/model'),
 var interval, sensor;
 var model = resources.pi.sensors;
 var pluginName = 'Temperature & Humidity';
-var localParams = {'simulate': false, 'frequency': 5000};
+var localParams = {'simulate': true, 'frequency': 10000};
 
 exports.start = function (params) {
     localParams = params;
@@ -14,7 +14,6 @@ exports.start = function (params) {
         connectHardware();
     }
 };
-
 
 exports.stop = function () {
     if (params.simulate) {

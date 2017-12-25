@@ -8,7 +8,7 @@ var ledsPlugin = require('./plugins/internal/ledsPlugin'),
     pirPlugin = require('./plugins/internal/pirPlugin'),
     dhtPlugin = require('./plugins/internal/DH11SensorPlugin');
 
-pirPlugin.start({'simulate': true, 'frequency': 2000});
+pirPlugin.start({'simulate': true, 'frequency': 5000 });
 dhtPlugin.start({'simulate': true, 'frequency': 10000});
 
 var  server = httpServer.listen(resources.pi.port, function () {
