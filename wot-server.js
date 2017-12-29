@@ -10,7 +10,7 @@ var ledsPlugin = require('./plugins/internal/ledsPlugin'),
 
 pirPlugin.start({'simulate': true, 'frequency': 5000 });
 dhtPlugin.start({'simulate': true, 'frequency': 10000});
-ledsPlugin.start({'simulate': false});
+ledsPlugin.start({'simulate': true});
 
 var  server = httpServer.listen(resources.pi.port, function () {
     console.info('Your WoT is up and running on port %s',

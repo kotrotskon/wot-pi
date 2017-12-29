@@ -7,12 +7,11 @@ var resources = require('./../../resources/model');
 var actuator, interval;
 var model = resources.pi.actuators.leds['1'];
 var pluginName = model.name;
-var localParams = {'simulate': false, 'frequency': 2000};
+var localParams = {'simulate': true, 'frequency': 2000};
 
 exports.start = function (params) {
     localParams = params;
     observe(model); //#A
-
     if (localParams.simulate) {
         simulate();
     } else {
