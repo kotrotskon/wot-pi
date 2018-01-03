@@ -6,14 +6,14 @@
     "sensors": {
       "temperature": {
         "name": "Temperature Sensor",
-        "description": "An ambient temperature sensor",
+        "description": "An ambient temperature sensor.",
         "unit": "celsius",
         "value": 0,
         "gpio": 12
       },
-      "humidity":{
+      "humidity": {
         "name": "Humidity Sensor",
-        "description": "An ambient humidity sensor",
+        "description": "An ambient humidity sensor.",
         "unit": "%",
         "value": 0,
         "gpio": 12

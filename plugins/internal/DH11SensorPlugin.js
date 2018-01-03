@@ -1,10 +1,14 @@
+/**
+ * Created by Kostas on 23/10/2017.
+ */
+
 var resources = require('./../../resources/model'),
     utils = require('./../../utils/utils.js');
 
 var interval, sensor;
 var model = resources.pi.sensors;
 var pluginName = 'Temperature & Humidity';
-var localParams = {'simulate': false, 'frequency': 10000};
+var localParams = {'simulate': true, 'frequency': 5000};
 
 exports.start = function (params) {
     localParams = params;

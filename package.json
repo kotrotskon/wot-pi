@@ -2,8 +2,28 @@
   "name": "wot-pi",
   "version": "0.0.1",
   "description": "a web of things project",
+  "main": "wot-pi.js",
   "repository": "https://github.com/kotrotskon/wot-pi.git",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "license": "Apache-2.0",
+  "author": "Kotrotsios Konstantinos",
+  "keywords": [
+    "web of things",
+    "building the web of things",
+    "wot",
+    "REST",
+    "HTTP",
+    "mqtt",
+    "pi",
+    "coap",
+    "m2m",
+    "iot",
+    "tcp",
+    "internet of things",
+    "messaging"
+  ],
   "dependencies": {
     "async": "^2.5.0",
     "cors": "^2.8.4",
@@ -12,9 +32,14 @@
     "node-json2html": "^1.1.1",
     "object.observe": "^0.2.6",
     "request": "^2.83.0"
+    "bl": "^1.0.0",
+    "body-parser": "^1.18.2",
+    "coap": "^0.20.0",
+    "ws": "^0.7.2"
   },
   "optionalDependencies": {
     "onoff": "^1.0.4",
     "node-dht-sensor": "^0.0.8"
   }
 }
+
