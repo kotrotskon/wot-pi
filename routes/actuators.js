@@ -20,16 +20,6 @@ router.route('/leds/:id').get(function (req, res, next) { //#A
     req.result = resources.pi.actuators.leds[req.params.id];
     next();
 }).put(function(req, res, next) { //#B
-    console.log('put:');
-    console.log(req.params);
-    console.log(req.body);
-    var selectedLed = resources.pi.actuators.leds[req.params.id];
-    selectedLed.value = req.body.value; //#C
-    req.result = selectedLed;
-    next();
-}).post(function(req, res, next) {
-    console.log('post:');
-    console.log(req.body);
     var selectedLed = resources.pi.actuators.leds[req.params.id];
     selectedLed.value = req.body.value; //#C
     req.result = selectedLed;
